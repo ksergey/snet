@@ -4,10 +4,10 @@
  */
 
 #include <cstdlib>
-#include <snet/common.hpp>
+#include <snet/socket.hpp>
 
 int main(int argc, char* argv[])
 {
-    snet::socket_t socket = snet::invalid_socket;
+    snet::socket s;
     return EXIT_SUCCESS;
 }

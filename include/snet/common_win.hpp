@@ -11,10 +11,10 @@
 namespace snet {
 
     /// native socket type
-    typedef SOCKET socket_t;
+    typedef SOCKET sock_t;
 
     /// native socket invalid value
-    static const socket_t invalid_socket = INVALID_SOCKET;
+    static const sock_t invalid_socket = INVALID_SOCKET;
 
 } // namespace snet
 
