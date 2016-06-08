@@ -20,12 +20,12 @@ namespace snet {
 
     inline bool socket::set_nonblock(bool value)
     {
-        unsigned int flags = value;
+        u_long flags = value;
         int rc = ::ioctlsocket(get(), FIONBIO, &flags);
         return rc == 0;
     }
 
-    inline bool socket::set_nonblock(bool value)
+    inline bool socket::set_cloexec(bool value)
     {
         auto rc = SetHandleInformation(reinterpret_cast< HANDLE >(get()), HANDLE_FLAG_INHERIT, int(value));
         return rc != 0;
