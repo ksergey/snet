@@ -10,6 +10,7 @@
 #   define WIN32_LEAN_AND_MEAN
 #endif /* ! defined( WIN32_LEAN_AND_MEAN ) */
 
+#include <system_error>
 #include <windows.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
@@ -23,6 +24,27 @@ namespace snet {
 
     /// native socket invalid value
     static constexpr const sock_t invalid_socket = INVALID_SOCKET;
+
+    /// winsock "special" initializer
+    struct winsock_initializer final
+    {
+        winsock_initializer()
+        {
+            WSADATA data;
+            auto rc = ::WSAStartup(MAKEWORD(2,2), &data);
+            if (rc != 0) {
+                throw std::system_error(::WSAGetLastError(), std::system_category(), "WSAStartup failed");
+            }
+        }
+
+        ~winsock_initializer()
+        {
+            WSACleanup();
+        }
+    };
+
+    /// init trick
+    static const winsock_initializer winsock_initialized{};
 
 } // namespace snet
 

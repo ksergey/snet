@@ -5,7 +5,6 @@
 
 #include <cstdlib>
 #include <cstdio>
-#include <snet/init.hpp>
 #include <snet/socket.hpp>
 #include <snet/resolver.hpp>
 #include <snet/addrinfo_endpoint.hpp>
@@ -14,11 +13,6 @@ void print_socket(const snet::socket& s);
 
 int main(int argc, char* argv[])
 {
-    if (!snet::init()) {
-        std::printf("failed to init sockets\n");
-        return EXIT_FAILURE;
-    }
-
     snet::socket s0 = snet::socket::create(AF_INET, SOCK_STREAM, 0);
     print_socket(s0);
     snet::socket s1 = std::move(s0);
@@ -48,8 +42,6 @@ int main(int argc, char* argv[])
     for (auto& ep: resolver) {
         std::printf("   %s\n", ep.to_string().c_str());
     }
-
-    snet::shutdown();
 
     return EXIT_SUCCESS;
 }
