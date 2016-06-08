@@ -59,7 +59,7 @@ namespace snet {
             /// create socket
             /// @param[in] p is communication protocol definition (@see protocol.hpp)
             /// @return socket object
-            static socket create(const protocol& p) { return create(p.family, p.socktype, p.protocol); }
+            static socket create(const protocol& p) { return create(p.domain, p.type, p.proto); }
 
         private:
             sock_t _sock{ invalid_socket };

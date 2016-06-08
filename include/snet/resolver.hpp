@@ -93,10 +93,10 @@ namespace snet {
 
         addrinfo hints = {};
 
-        hints.ai_family = p.family;
-        hints.ai_socktype = p.socktype;
+        hints.ai_family = p.domain;
+        hints.ai_socktype = p.type;
         hints.ai_flags = flags;
-        hints.ai_protocol = p.protocol;
+        hints.ai_protocol = p.proto;
         hints.ai_canonname = nullptr;
         hints.ai_addr = nullptr;
         hints.ai_next = nullptr;

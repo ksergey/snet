@@ -12,9 +12,12 @@ namespace snet {
 
     struct protocol
     {
-        int family;
-        int socktype;
-        int protocol;
+        /// protocol domain (i.e. AF_INET, AF_INET6)
+        int domain;
+        /// protocol type (i.e. SOCK_STREAM)
+        int type;
+        /// protocol (almost always 0)
+        int proto;
     };
 
     static constexpr const protocol tcp_any = protocol{ AF_UNSPEC,  SOCK_STREAM, 0 };
