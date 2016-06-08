@@ -5,8 +5,10 @@ project(SNET)
 # include necessary submodules
 set(CMAKE_MODULE_PATH "${SNET_SOURCE_DIR}/cmake")
 
-# configure compiler
-include(Compiler)
+# setting the cpp standard
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # add snet include path
 include_directories("${SNET_SOURCE_DIR}/include")
