@@ -1,3 +1,3 @@
-# README #
+# snet library #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+This is a wrapper around sockets for Windows and Posix(Linux) environents

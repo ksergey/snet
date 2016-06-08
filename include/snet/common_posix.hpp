@@ -6,6 +6,11 @@
 #ifndef MADLIFE_common_posix_070616233130_MADLIFE
 #define MADLIFE_common_posix_070616233130_MADLIFE
 
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <unistd.h>
+#include <fcntl.h>
+
 namespace snet {
 
     /// native socket type

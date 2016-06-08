@@ -6,6 +6,7 @@
 #ifndef MADLIFE_common_win_070616233132_MADLIFE
 #define MADLIFE_common_win_070616233132_MADLIFE
 
+#include <windows.h>
 #include <winsock2.h>
 
 namespace snet {
