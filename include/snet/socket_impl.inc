@@ -29,9 +29,9 @@ namespace snet {
         close();
     }
 
-    inline socket socket::create(int domain, int type, int protocol)
+    inline socket socket::create(int family, int socktype, int protocol)
     {
-        return ::socket(domain, type, protocol);
+        return ::socket(family, socktype, protocol);
     }
 
 } // namespace snet

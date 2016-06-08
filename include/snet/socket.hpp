@@ -7,6 +7,7 @@
 #define MADLIFE_socket_070616234927_MADLIFE
 
 #include <snet/common.hpp>
+#include <snet/protocol.hpp>
 
 namespace snet {
 
@@ -49,11 +50,16 @@ namespace snet {
             bool set_cloexec(bool value = true);
 
             /// create socket
-            /// @param[in] domain is communication domain
-            /// @param[in] type is communication semantic
+            /// @param[in] family is communication domain
+            /// @param[in] socktype is communication semantic
             /// @param[in] protocol is communication protocol family
             /// @return socket object
-            static socket create(int domain, int type, int protocol);
+            static socket create(int family, int socktype, int protocol);
+
+            /// create socket
+            /// @param[in] p is communication protocol definition (@see protocol.hpp)
+            /// @return socket object
+            static socket create(const protocol& p) { return create(p.family, p.socktype, p.protocol); }
 
         private:
             sock_t _sock{ invalid_socket };

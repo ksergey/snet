@@ -8,6 +8,7 @@
 
 #include <windows.h>
 #include <winsock2.h>
+#include <ws2tcpip.h>
 
 namespace snet {
 
@@ -15,7 +16,7 @@ namespace snet {
     typedef SOCKET sock_t;
 
     /// native socket invalid value
-    static const sock_t invalid_socket = INVALID_SOCKET;
+    static constexpr const sock_t invalid_socket = INVALID_SOCKET;
 
 } // namespace snet
 

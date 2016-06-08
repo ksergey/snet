@@ -10,6 +10,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <netdb.h>
 
 namespace snet {
 
@@ -17,7 +18,7 @@ namespace snet {
     typedef int sock_t;
 
     /// native socket invalid value
-    static const sock_t invalid_socket = -1;
+    static constexpr const sock_t invalid_socket = -1;
 
 } // namespace snet
 

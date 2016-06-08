@@ -6,15 +6,13 @@
 #ifndef MADLIFE_common_070616225738_MADLIFE
 #define MADLIFE_common_070616225738_MADLIFE
 
+#include <cstring>
+
 // include platform-depended code
 #if defined( _WIN32 )
 #   include <snet/common_win.hpp>
 #else /* defined( _WIN32 ) */
 #   include <snet/common_posix.hpp>
 #endif /* defined( _WIN32 ) */
-
-namespace snet {
-
-} // namespace snet
 
 #endif /* MADLIFE_common_070616225738_MADLIFE */

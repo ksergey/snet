@@ -6,12 +6,13 @@
 #include <cstdlib>
 #include <cstdio>
 #include <snet/socket.hpp>
+#include <snet/resolver.hpp>
 
 void print_socket(const snet::socket& s);
 
 int main(int argc, char* argv[])
 {
-    snet::socket s0= snet::socket::create(AF_INET, SOCK_STREAM, 0);
+    snet::socket s0 = snet::socket::create(AF_INET, SOCK_STREAM, 0);
     print_socket(s0);
     snet::socket s1 = std::move(s0);
     s1.set_cloexec();
@@ -22,6 +23,14 @@ int main(int argc, char* argv[])
     print_socket(s1);
     snet::socket s2 = std::move(s1);
     print_socket(s2);
+    s2 = snet::socket::create(snet::tcp_any);
+    print_socket(s2);
+    s2 = snet::socket::create(snet::tcp_v4);
+    print_socket(s2);
+    s2 = snet::socket::create(snet::tcp_v6);
+    print_socket(s2);
+
+    //snet::resolver resolver = snet::resolver(SOCK_STREAM, "google.ru");
 
     return EXIT_SUCCESS;
 }
