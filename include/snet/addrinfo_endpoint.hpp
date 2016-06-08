@@ -42,11 +42,11 @@ namespace snet {
             const sockaddr* data() const { return _data->ai_addr; }
 
             /// return native data size
-            socklen_t size() const { return _data->ai_addrlen; }
+            /* socklen_t */ size_t size() const { return _data->ai_addrlen; }
 
             /// return string representation of endpoint
             /// @param[in] delim is delimiter between host and port
-            std::string to_string(char delim = ' ') const;
+            std::string str(char delim = ' ') const;
 
         private:
             const addrinfo* _data{ nullptr };
@@ -63,7 +63,7 @@ namespace snet {
         return snet::protocol{ _data->ai_family, _data->ai_socktype, _data->ai_protocol };
     }
 
-    inline std::string addrinfo_endpoint::to_string(char delim) const
+    inline std::string addrinfo_endpoint::str(char delim) const
     {
         assert( _data );
 

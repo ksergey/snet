@@ -34,13 +34,13 @@ int main(int argc, char* argv[])
     snet::resolver resolver = snet::resolver(snet::tcp_any, "google.ru:http");
     std::printf("google.ru resolved as:\n");
     for (auto& ep: resolver) {
-        std::printf("   %s\n", ep.to_string().c_str());
+        std::printf("   %s\n", ep.str().c_str());
     }
 
     resolver = snet::resolver(snet::tcp_any, "ya.ru:http");
     std::printf("ya.ru resolved as:\n");
     for (auto& ep: resolver) {
-        std::printf("   %s\n", ep.to_string().c_str());
+        std::printf("   %s\n", ep.str().c_str());
     }
 
     return EXIT_SUCCESS;
