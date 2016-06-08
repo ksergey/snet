@@ -6,6 +6,10 @@
 #ifndef MADLIFE_common_win_070616233132_MADLIFE
 #define MADLIFE_common_win_070616233132_MADLIFE
 
+#if ! defined( WIN32_LEAN_AND_MEAN )
+#   define WIN32_LEAN_AND_MEAN
+#endif /* ! defined( WIN32_LEAN_AND_MEAN ) */
+
 #include <windows.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
