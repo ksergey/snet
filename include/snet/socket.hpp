@@ -24,4 +24,7 @@ namespace snet {
 
 } // namespace snet
 
+// include implementation
+#include "socket_impl.inc"
+
 #endif /* MADLIFE_socket_070616234927_MADLIFE */
