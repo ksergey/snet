@@ -10,13 +10,16 @@
 #include <utility>
 #include <string>
 #include <snet/common.hpp>
-#include <snet/protocol.hpp>
+#include <snet/resolver_iterator.hpp>
 
 namespace snet {
 
     class resolver
     {
         public:
+            /// resolver iterator type
+            typedef resolver_iterator const_iterator;
+
             resolver(const resolver&) = delete;
             resolver& operator=(const resolver&) = delete;
 
@@ -30,7 +33,7 @@ namespace snet {
             ~resolver();
 
             /// return true if address resolution done
-            bool valid() const { return _addrinfo != nullptr; }
+            bool valid() const { return _data != nullptr; }
 
             /// same as valid()
             operator bool() const { return valid(); }
@@ -38,21 +41,27 @@ namespace snet {
             /// same as !valid()
             bool operator!() const { return !valid(); }
 
+            /// return iterator to begin
+            const_iterator begin() const { return const_iterator(_data); }
+
+            /// return iterator to end
+            const_iterator end() const { return const_iterator(); }
+
         private:
             void resolv(const protocol& p, const char* node, const char* service, int flags);
 
-            addrinfo* _addrinfo{ nullptr };
+            addrinfo* _data{ nullptr };
     };
 
     inline resolver::resolver(resolver&& r)
     {
-        assert( !_addrinfo );
-        std::swap(_addrinfo, r._addrinfo);
+        assert( !_data );
+        std::swap(_data, r._data);
     }
 
     inline resolver& resolver::operator=(resolver&& r)
     {
-        std::swap(_addrinfo, r._addrinfo);
+        std::swap(_data, r._data);
         return *this;
     }
 
@@ -73,14 +82,14 @@ namespace snet {
 
     inline resolver::~resolver()
     {
-        if (_addrinfo) {
-            freeaddrinfo(_addrinfo);
+        if (_data) {
+            freeaddrinfo(_data);
         }
     }
 
     inline void resolver::resolv(const protocol& p, const char* node, const char* service, int flags)
     {
-        assert( !_addrinfo );
+        assert( !_data );
 
         addrinfo hints = {};
 
@@ -92,7 +101,7 @@ namespace snet {
         hints.ai_addr = nullptr;
         hints.ai_next = nullptr;
 
-        getaddrinfo(node, service, &hints, &_addrinfo);
+        getaddrinfo(node, service, &hints, &_data);
     }
 
 } // namespace snet

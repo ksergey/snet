@@ -7,6 +7,7 @@
 #include <cstdio>
 #include <snet/socket.hpp>
 #include <snet/resolver.hpp>
+#include <snet/addrinfo_endpoint.hpp>
 
 void print_socket(const snet::socket& s);
 
@@ -30,7 +31,17 @@ int main(int argc, char* argv[])
     s2 = snet::socket::create(snet::tcp_v6);
     print_socket(s2);
 
-    //snet::resolver resolver = snet::resolver(SOCK_STREAM, "google.ru");
+    snet::resolver resolver = snet::resolver(snet::tcp_any, "google.ru:http");
+    std::printf("google.ru resolved as:\n");
+    for (auto& ep: resolver) {
+        std::printf("   %s\n", ep.to_string().c_str());
+    }
+
+    resolver = snet::resolver(snet::tcp_any, "ya.ru:http");
+    std::printf("ya.ru resolved as:\n");
+    for (auto& ep: resolver) {
+        std::printf("   %s\n", ep.to_string().c_str());
+    }
 
     return EXIT_SUCCESS;
 }
