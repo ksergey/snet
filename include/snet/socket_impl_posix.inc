@@ -52,26 +52,26 @@ namespace snet {
         return rc == 0;
     }
 
-    inline ssize_t socket::send(const void* buf, size_t len, int flags)
+    inline ssize_t socket::send(const void* buf, size_t len)
     {
-        return ::send(get(), buf, len, flags);
+        return ::send(get(), buf, len, 0);
     }
 
-    inline ssize_t socket::sendto(const void* buf, size_t len, int flags,
+    inline ssize_t socket::sendto(const void* buf, size_t len,
         const sockaddr* dest_addr, socklen_t addrlen)
     {
-        return ::sendto(get(), buf, len, flags, dest_addr, addrlen);
+        return ::sendto(get(), buf, len, 0, dest_addr, addrlen);
     }
 
-    inline ssize_t socket::recv(void* buf, size_t len, int flags)
+    inline ssize_t socket::recv(void* buf, size_t len)
     {
-        return ::recv(get(), buf, len, flags);
+        return ::recv(get(), buf, len, 0);
     }
 
-    inline ssize_t socket::recvfrom(void* buf, size_t len, int flags,
+    inline ssize_t socket::recvfrom(void* buf, size_t len,
         sockaddr* src_addr, socklen_t* addrlen)
     {
-        return ::recvfrom(get(), buf, len, flags, src_addr, addrlen);
+        return ::recvfrom(get(), buf, len, 0, src_addr, addrlen);
     }
 
 } // namespace snet

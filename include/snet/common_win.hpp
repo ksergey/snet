@@ -46,6 +46,10 @@ namespace snet {
     /// init trick
     static const winsock_initializer winsock_initialized{};
 
+    /// map some types
+    typedef int ssize_t;
+    typedef int socklen_t;
+
 } // namespace snet
 
 #endif /* MADLIFE_common_win_070616233132_MADLIFE */

@@ -60,17 +60,17 @@ namespace snet {
             static socket create(const protocol& p) { return create(p.domain, p.type, p.proto); }
 
             /// send data into socket
-            ssize_t send(const void* buf, size_t len, int flags = 0);
+            ssize_t send(const void* buf, size_t len);
 
             /// send data into socket
-            ssize_t sendto(const void* buf, size_t len, int flags,
+            ssize_t sendto(const void* buf, size_t len,
                     const sockaddr* dest_addr, socklen_t addrlen);
 
             /// recv data from socket
-            ssize_t recv(void* buf, size_t len, int flags = 0);
+            ssize_t recv(void* buf, size_t len);
 
             /// recv data from socket
-            ssize_t recvfrom(void* buf, size_t len, int flags,
+            ssize_t recvfrom(void* buf, size_t len,
                     sockaddr* src_addr, socklen_t* addrlen);
 
         private:

@@ -47,7 +47,7 @@ namespace snet {
             const sockaddr* data() const { return _data->ai_addr; }
 
             /// return native data size
-            /* socklen_t */ size_t size() const { return _data->ai_addrlen; }
+            socklen_t size() const { return _data->ai_addrlen; }
 
             /// return string representation of endpoint
             /// @param[in] delim is delimiter between host and port
