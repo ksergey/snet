@@ -31,23 +31,23 @@ namespace snet {
         return rc != 0;
     }
 
-    inline ssize_t socket::send(const void* buf, size_t len, int flags)
+    inline ssize_t socket::send(const void* buf, size_t len)
     {
 
     }
 
-    inline ssize_t socket::sendto(const void* buf, size_t len, int flags,
+    inline ssize_t socket::sendto(const void* buf, size_t len,
         const sockaddr* dest_addr, socklen_t addrlen)
     {
 
     }
 
-    inline ssize_t socket::recv(void* buf, size_t len, int flags)
+    inline ssize_t socket::recv(void* buf, size_t len,)
     {
 
     }
 
-    inline ssize_t socket::recvfrom(void* buf, size_t len, int flags,
+    inline ssize_t socket::recvfrom(void* buf, size_t len,
         sockaddr* src_addr, socklen_t* addrlen)
     {
 
