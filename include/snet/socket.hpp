@@ -62,6 +62,23 @@ namespace snet {
             /// @return socket object
             static socket create(const protocol& p) { return create(p.domain, p.type, p.proto); }
 
+            /// establish connection
+            /// @return true if success
+            bool connect(const sockaddr* addr, socklen_t addrlen);
+
+            /// bind socket
+            /// @return true if success
+            bool bind(const sockaddr* addr, socklen_t addrlen);
+
+            /// place socket in a listen state
+            /// @return true if success
+            bool listen(int backlog = 10);
+
+            /// accept incomming connection
+            /// @return accepted socket
+            /// the function actualy could return non valid socket in case of error
+            socket accept(sockaddr* addr = nullptr, socklen_t* addrlen = nullptr);
+
             /// send data into socket
             ssize_t send(const void* buf, size_t len);
 
@@ -104,6 +121,26 @@ namespace snet {
     inline socket socket::create(int family, int socktype, int protocol)
     {
         return ::socket(family, socktype, protocol);
+    }
+
+    inline bool socket::connect(const sockaddr* addr, socklen_t addrlen)
+    {
+        return ::connect(get(), addr, addrlen) == 0;
+    }
+
+    inline bool socket::bind(const sockaddr* addr, socklen_t addrlen)
+    {
+        return ::bind(get(), addr, addrlen) == 0;
+    }
+
+    inline bool socket::listen(int backlog)
+    {
+        return ::listen(get(), backlog) == 0;
+    }
+
+    inline socket socket::accept(sockaddr* addr, socklen_t* addrlen)
+    {
+        return ::accept(get(), addr, addrlen);
     }
 
 } // namespace snet
