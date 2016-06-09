@@ -7,7 +7,6 @@
 #include <cstdio>
 #include <snet/socket.hpp>
 #include <snet/resolver.hpp>
-#include <snet/addrinfo_endpoint.hpp>
 
 void print_socket(const snet::socket& s);
 

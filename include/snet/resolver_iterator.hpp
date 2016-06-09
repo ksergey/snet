@@ -7,12 +7,12 @@
 #define MADLIFE_resolver_iterator_080616161153_MADLIFE
 
 #include <iterator>
-#include <snet/addrinfo_endpoint.hpp>
+#include <snet/resolver_endpoint.hpp>
 
 namespace snet {
 
     class resolver_iterator final
-        : std::iterator< std::forward_iterator_tag, addrinfo_endpoint >
+        : std::iterator< std::forward_iterator_tag, resolver_endpoint >
     {
         public:
             resolver_iterator() = default;
@@ -23,11 +23,11 @@ namespace snet {
             resolver_iterator& operator++();
             bool operator==(const resolver_iterator& it) const { return _ep._data == it._ep._data; }
             bool operator!=(const resolver_iterator& it) const { return _ep._data != it._ep._data; }
-            const addrinfo_endpoint& operator*() const { return _ep; }
-            const addrinfo_endpoint* operator->() const { return &_ep; }
+            const resolver_endpoint& operator*() const { return _ep; }
+            const resolver_endpoint* operator->() const { return &_ep; }
 
         private:
-            addrinfo_endpoint _ep;
+            resolver_endpoint _ep;
     };
 
     inline resolver_iterator::resolver_iterator(const addrinfo* data)

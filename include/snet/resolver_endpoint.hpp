@@ -3,28 +3,27 @@
  * Copyright (c) 2016 Sergey Kovalevich <inndie@gmail.com>
  */
 
-#ifndef MADLIFE_addrinfo_endpoint_080616160047_MADLIFE
-#define MADLIFE_addrinfo_endpoint_080616160047_MADLIFE
+#ifndef MADLIFE_resolver_endpoint_090616114717_MADLIFE
+#define MADLIFE_resolver_endpoint_090616114717_MADLIFE
 
 #include <cassert>
 #include <string>
 #include <cstdint>
 #include <snet/common.hpp>
-#include <snet/protocol.hpp>
 
 namespace snet {
 
-    class addrinfo_endpoint final
+    class resolver_endpoint final
     {
         public:
-            addrinfo_endpoint() = default;
-            ~addrinfo_endpoint() = default;
-            addrinfo_endpoint(const addrinfo_endpoint&) = default;
-            addrinfo_endpoint& operator=(const addrinfo_endpoint&) = default;
-            addrinfo_endpoint(addrinfo_endpoint&&) = default;
-            addrinfo_endpoint& operator=(addrinfo_endpoint&&) = default;
+            resolver_endpoint() = default;
+            ~resolver_endpoint() = default;
+            resolver_endpoint(const resolver_endpoint&) = default;
+            resolver_endpoint& operator=(const resolver_endpoint&) = default;
+            resolver_endpoint(resolver_endpoint&&) = default;
+            resolver_endpoint& operator=(resolver_endpoint&&) = default;
 
-            explicit addrinfo_endpoint(const addrinfo* data);
+            explicit resolver_endpoint(const addrinfo* data);
 
             /// return true if endpoint is valid
             bool valid() const { return _data != nullptr; }
@@ -35,8 +34,14 @@ namespace snet {
             /// same as !valid()
             bool operator!() const { return !valid(); }
 
-            /// return endpoint protocol
-            snet::protocol protocol() const;
+            /// return socket protocol family
+            int domain() const { return _data->ai_family; }
+
+            /// return socket type
+            int type() const { return _data->ai_socktype; }
+
+            /// return socket protocol
+            int proto() const { return _data->ai_protocol; }
 
             /// return native data
             const sockaddr* data() const { return _data->ai_addr; }
@@ -54,16 +59,11 @@ namespace snet {
             friend class resolver_iterator;
     };
 
-    inline addrinfo_endpoint::addrinfo_endpoint(const addrinfo* data)
+    inline resolver_endpoint::resolver_endpoint(const addrinfo* data)
         : _data(data)
     {}
 
-    inline snet::protocol addrinfo_endpoint::protocol() const
-    {
-        return snet::protocol{ _data->ai_family, _data->ai_socktype, _data->ai_protocol };
-    }
-
-    inline std::string addrinfo_endpoint::str(char delim) const
+    inline std::string resolver_endpoint::str(char delim) const
     {
         assert( _data );
 
@@ -97,4 +97,4 @@ namespace snet {
 
 } // namespace snet
 
-#endif /* MADLIFE_addrinfo_endpoint_080616160047_MADLIFE */
+#endif /* MADLIFE_resolver_endpoint_090616114717_MADLIFE */
