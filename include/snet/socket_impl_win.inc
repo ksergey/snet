@@ -42,7 +42,7 @@ namespace snet {
 
     }
 
-    inline ssize_t socket::recv(void* buf, size_t len,)
+    inline ssize_t socket::recv(void* buf, size_t len)
     {
 
     }
