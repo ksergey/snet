@@ -33,24 +33,28 @@ namespace snet {
 
     inline ssize_t socket::send(const void* buf, size_t len)
     {
-
+        auto rc = ::send(get(), buf, len, 0);
+        return rc == SOCKET_ERROR ? -1 : rc;
     }
 
     inline ssize_t socket::sendto(const void* buf, size_t len,
         const sockaddr* dest_addr, socklen_t addrlen)
     {
-
+        auto rc = ::sendto(get(), buf, len, 0, dest_addr, addrlen);
+        return rc == SOCKET_ERROR ? -1 : rc;
     }
 
     inline ssize_t socket::recv(void* buf, size_t len)
     {
-
+        auto rc = ::recv(get(), buf, len, 0);
+        return rc == SOCKET_ERROR ? -1 : rc;
     }
 
     inline ssize_t socket::recvfrom(void* buf, size_t len,
         sockaddr* src_addr, socklen_t* addrlen)
     {
-
+        auto rc = ::recvfrom(get(), buf, len, 0, src_addr, addrlen);
+        return rc == SOCKET_ERROR ? -1 : rc;
     }
 
 } // namespace snet

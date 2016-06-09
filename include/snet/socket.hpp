@@ -6,8 +6,11 @@
 #ifndef MADLIFE_socket_070616234927_MADLIFE
 #define MADLIFE_socket_070616234927_MADLIFE
 
+#include <cassert>
+#include <utility>
 #include <snet/common.hpp>
 #include <snet/protocol.hpp>
+#include <snet/last_error.hpp>
 
 namespace snet {
 
@@ -77,9 +80,39 @@ namespace snet {
             sock_t _sock{ invalid_socket };
     };
 
+    inline socket::socket(sock_t d)
+        : _sock(d)
+    {}
+
+    inline socket::socket(socket&& s)
+    {
+        assert( _sock == invalid_socket );
+        std::swap(_sock, s._sock);
+    }
+
+    inline socket& socket::operator=(socket&& s)
+    {
+        std::swap(_sock, s._sock);
+        return *this;
+    }
+
+    inline socket::~socket()
+    {
+        close();
+    }
+
+    inline socket socket::create(int family, int socktype, int protocol)
+    {
+        return ::socket(family, socktype, protocol);
+    }
+
 } // namespace snet
 
-// include implementation
-#include "socket_impl.inc"
+// include platform-depended code
+#if defined( _WIN32 )
+#   include "socket_impl_win.inc"
+#else /* defined( _WIN32 ) */
+#   include "socket_impl_posix.inc"
+#endif /* defined( _WIN32 ) */
 
 #endif /* MADLIFE_socket_070616234927_MADLIFE */

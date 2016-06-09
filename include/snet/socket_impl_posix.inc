@@ -54,24 +54,24 @@ namespace snet {
 
     inline ssize_t socket::send(const void* buf, size_t len)
     {
-        return ::send(get(), buf, len, 0);
+        return ::send(get(), buf, len, MSG_NOSIGNAL);
     }
 
     inline ssize_t socket::sendto(const void* buf, size_t len,
         const sockaddr* dest_addr, socklen_t addrlen)
     {
-        return ::sendto(get(), buf, len, 0, dest_addr, addrlen);
+        return ::sendto(get(), buf, len, MSG_NOSIGNAL, dest_addr, addrlen);
     }
 
     inline ssize_t socket::recv(void* buf, size_t len)
     {
-        return ::recv(get(), buf, len, 0);
+        return ::recv(get(), buf, len, MSG_NOSIGNAL);
     }
 
     inline ssize_t socket::recvfrom(void* buf, size_t len,
         sockaddr* src_addr, socklen_t* addrlen)
     {
-        return ::recvfrom(get(), buf, len, 0, src_addr, addrlen);
+        return ::recvfrom(get(), buf, len, MSG_NOSIGNAL, src_addr, addrlen);
     }
 
 } // namespace snet

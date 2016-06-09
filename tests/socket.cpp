@@ -49,6 +49,13 @@ int main(int argc, char* argv[])
     ep = snet::endpoint("2001:0DB8:AA10:0001:0000:0000:0000:00FB", 4446);
     std::printf("endpoint: %s\n", ep.str().c_str());
 
+    auto rc = s2.send("1234", 4);
+    if (rc == -1) {
+        std::printf("failed to send, err: %d\n", snet::last_error::code());
+    } else {
+        std::printf("sent %d bytes\n", int(rc));
+    }
+
     return EXIT_SUCCESS;
 }
 
