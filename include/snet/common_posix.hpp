@@ -6,6 +6,7 @@
 #ifndef MADLIFE_common_posix_070616233130_MADLIFE
 #define MADLIFE_common_posix_070616233130_MADLIFE
 
+#include <cerrno>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>

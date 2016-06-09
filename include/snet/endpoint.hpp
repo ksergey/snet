@@ -29,6 +29,12 @@ namespace snet {
             /// return true if endpoint is valid
             bool valid() const;
 
+            /// same as valid()
+            operator bool() const { return valid(); }
+
+            /// same as !valid()
+            bool operator!() const { return !valid(); }
+
             /// return endpoint domain
             int domain() const { return _data.in.sa_family; }
 

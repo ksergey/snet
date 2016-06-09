@@ -40,14 +40,12 @@ namespace snet {
             bool close();
 
             /// switch the socket non-blocking mode
-            /// @param[in] value is new value
             /// @return false in case of error
-            bool set_nonblock(bool value = true);
+            bool set_nonblock(bool flag = true);
 
             /// switch the socket cloexec mode
-            /// @param[in] value is new value
             /// @return false in case of error
-            bool set_cloexec(bool value = true);
+            bool set_cloexec(bool flag = true);
 
             /// create socket
             /// @param[in] family is communication domain
@@ -60,6 +58,20 @@ namespace snet {
             /// @param[in] p is communication protocol definition (@see protocol.hpp)
             /// @return socket object
             static socket create(const protocol& p) { return create(p.domain, p.type, p.proto); }
+
+            /// send data into socket
+            ssize_t send(const void* buf, size_t len, int flags = 0);
+
+            /// send data into socket
+            ssize_t sendto(const void* buf, size_t len, int flags,
+                    const sockaddr* dest_addr, socklen_t addrlen);
+
+            /// recv data from socket
+            ssize_t recv(void* buf, size_t len, int flags = 0);
+
+            /// recv data from socket
+            ssize_t recvfrom(void* buf, size_t len, int flags,
+                    sockaddr* src_addr, socklen_t* addrlen);
 
         private:
             sock_t _sock{ invalid_socket };

@@ -18,14 +18,14 @@ namespace snet {
         return false;
     }
 
-    inline bool socket::set_nonblock(bool value)
+    inline bool socket::set_nonblock(bool flag)
     {
         int flags = ::fcntl(get(), F_GETFL, 0);
         if (flags == -1) {
             flags = 0;
         }
 
-        if (value) {
+        if (flag) {
             flags |= O_NONBLOCK;
         } else {
             flags &= ~int(O_NONBLOCK);
@@ -35,14 +35,14 @@ namespace snet {
         return rc == 0;
     }
 
-    inline bool socket::set_cloexec(bool value)
+    inline bool socket::set_cloexec(bool flag)
     {
         int flags = ::fcntl(get(), F_GETFL, 0);
         if (flags == -1) {
             flags = 0;
         }
 
-        if (value) {
+        if (flag) {
             flags |= FD_CLOEXEC;
         } else {
             flags &= ~int(FD_CLOEXEC);
@@ -50,6 +50,28 @@ namespace snet {
 
         int rc = ::fcntl(get(), F_SETFL, flags);
         return rc == 0;
+    }
+
+    inline ssize_t socket::send(const void* buf, size_t len, int flags)
+    {
+        return ::send(get(), buf, len, flags);
+    }
+
+    inline ssize_t socket::sendto(const void* buf, size_t len, int flags,
+        const sockaddr* dest_addr, socklen_t addrlen)
+    {
+        return ::sendto(get(), buf, len, flags, dest_addr, addrlen);
+    }
+
+    inline ssize_t socket::recv(void* buf, size_t len, int flags)
+    {
+        return ::recv(get(), buf, len, flags);
+    }
+
+    inline ssize_t socket::recvfrom(void* buf, size_t len, int flags,
+        sockaddr* src_addr, socklen_t* addrlen)
+    {
+        return ::recvfrom(get(), buf, len, flags, src_addr, addrlen);
     }
 
 } // namespace snet

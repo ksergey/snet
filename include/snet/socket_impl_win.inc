@@ -18,17 +18,39 @@ namespace snet {
         return false;
     }
 
-    inline bool socket::set_nonblock(bool value)
+    inline bool socket::set_nonblock(bool flag)
     {
-        u_long flags = value;
+        u_long flags = flag;
         int rc = ::ioctlsocket(get(), FIONBIO, &flags);
         return rc == 0;
     }
 
-    inline bool socket::set_cloexec(bool value)
+    inline bool socket::set_cloexec(bool flag)
     {
-        auto rc = SetHandleInformation(reinterpret_cast< HANDLE >(get()), HANDLE_FLAG_INHERIT, int(value));
+        auto rc = SetHandleInformation(reinterpret_cast< HANDLE >(get()), HANDLE_FLAG_INHERIT, int(flag));
         return rc != 0;
+    }
+
+    inline ssize_t socket::send(const void* buf, size_t len, int flags)
+    {
+
+    }
+
+    inline ssize_t socket::sendto(const void* buf, size_t len, int flags,
+        const sockaddr* dest_addr, socklen_t addrlen)
+    {
+
+    }
+
+    inline ssize_t socket::recv(void* buf, size_t len, int flags)
+    {
+
+    }
+
+    inline ssize_t socket::recvfrom(void* buf, size_t len, int flags,
+        sockaddr* src_addr, socklen_t* addrlen)
+    {
+
     }
 
 } // namespace snet
