@@ -48,7 +48,6 @@ namespace snet {
 
     /// map some types
     typedef int ssize_t;
-    typedef int socklen_t;
 
 } // namespace snet
 

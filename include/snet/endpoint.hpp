@@ -42,7 +42,7 @@ namespace snet {
             const sockaddr* data() const { return &_data.in; }
 
             /// return native data size
-            socklen_t size() const;
+            size_t size() const;
 
             /// return string representation of endpoint
             /// @param[in] delim is delimiter between host and port
@@ -74,7 +74,7 @@ namespace snet {
         return domain() == AF_INET || domain() == AF_INET6;
     }
 
-    inline socklen_t endpoint::size() const
+    inline size_t endpoint::size() const
     {
         if (domain() == AF_INET) {
             return sizeof(_data.in4);
