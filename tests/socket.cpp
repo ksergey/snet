@@ -7,6 +7,7 @@
 #include <cstdio>
 #include <snet/socket.hpp>
 #include <snet/resolver.hpp>
+#include <snet/endpoint.hpp>
 
 void print_socket(const snet::socket& s);
 
@@ -41,6 +42,12 @@ int main(int argc, char* argv[])
     for (auto& ep: resolver) {
         std::printf("   %s\n", ep.str().c_str());
     }
+
+    snet::endpoint ep("127.0.0.1", 444);
+    std::printf("endpoint: %s\n", ep.str().c_str());
+
+    ep = snet::endpoint("2001:0DB8:AA10:0001:0000:0000:0000:00FB", 4446);
+    std::printf("endpoint: %s\n", ep.str().c_str());
 
     return EXIT_SUCCESS;
 }

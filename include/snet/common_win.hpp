@@ -46,6 +46,9 @@ namespace snet {
     /// init trick
     static const winsock_initializer winsock_initialized{};
 
+    ///// inet_pton for windows
+    //inline int inet_pton(int af, const char* src, void* dst) { return InetPton(af, src, dst); }
+
 } // namespace snet
 
 #endif /* MADLIFE_common_win_070616233132_MADLIFE */

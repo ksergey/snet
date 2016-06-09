@@ -92,7 +92,6 @@ namespace snet {
         } else {
             return buffer;
         }
-        return std::string();
     }
 
 } // namespace snet
