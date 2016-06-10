@@ -5,6 +5,11 @@
 
 namespace snet {
 
+    inline const char* socket_error::str() const
+    {
+        return ::strerror(_code);
+    }
+
     inline bool socket_error::is_interrupted() const
     {
         return _code == EINTR;

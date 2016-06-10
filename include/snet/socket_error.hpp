@@ -17,6 +17,7 @@ namespace snet {
             socket_error(int code);
 
             int code() const { return _code; }
+            const char* str() const;
 
             bool is_interrupted() const;
             bool is_again() const;

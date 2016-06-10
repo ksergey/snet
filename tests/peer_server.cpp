@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
             }
             if (!res.is_again()) {
                 throw std::runtime_error("socket error happend <" +
-                        std::to_string(res.code()) + ">");
+                        std::string(res.str()) + ">");
             }
         }
 
@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
                 throw std::runtime_error("unexpected disconnect");
             } else if (!res.is_again()) {
                 throw std::runtime_error("socket recv error <" +
-                        std::to_string(res.code()) + ">");
+                        std::string(res.str()) + ">");
             }
         }
 
@@ -76,7 +76,7 @@ int main(int argc, char* argv[])
                 throw std::runtime_error("unexpected disconnect");
             } else if (!res.is_again()) {
                 throw std::runtime_error("socket send error <" +
-                        std::to_string(res.code()) + ">");
+                        std::string(res.str()) + ">");
             }
         }
 
