@@ -10,7 +10,8 @@
 #include <utility>
 #include <snet/common.hpp>
 #include <snet/protocol.hpp>
-#include <snet/last_error.hpp>
+#include <snet/result.hpp>
+#include <snet/exception.hpp>
 
 namespace snet {
 
@@ -39,8 +40,7 @@ namespace snet {
             sock_t get() { return _sock; }
 
             /// close the socket
-            /// @return false in case of error
-            bool close();
+            void close() noexcept;
 
             /// switch the socket non-blocking mode
             /// @return false in case of error
@@ -71,16 +71,15 @@ namespace snet {
             static socket create(const protocol& p) { return create(p.domain, p.type, p.proto); }
 
             /// establish connection
-            /// @return true if success
-            bool connect(const sockaddr* addr, socklen_t addrlen);
+            op_result connect(const sockaddr* addr, socklen_t addrlen) noexcept;
 
             /// bind socket
             /// @return true if success
-            bool bind(const sockaddr* addr, socklen_t addrlen);
+            op_result bind(const sockaddr* addr, socklen_t addrlen) noexcept;
 
             /// place socket in a listen state
             /// @return true if success
-            bool listen(int backlog = 10);
+            op_result listen(int backlog = 10) noexcept;
 
             /// accept incomming connection
             /// @return accepted socket
@@ -88,17 +87,17 @@ namespace snet {
             socket accept(sockaddr* addr = nullptr, socklen_t* addrlen = nullptr);
 
             /// send data into socket
-            ssize_t send(const void* buf, size_t len);
+            io_result send(const void* buf, size_t len);
 
             /// send data into socket
-            ssize_t sendto(const void* buf, size_t len,
+            io_result sendto(const void* buf, size_t len,
                     const sockaddr* dest_addr, socklen_t addrlen);
 
             /// recv data from socket
-            ssize_t recv(void* buf, size_t len);
+            io_result recv(void* buf, size_t len);
 
             /// recv data from socket
-            ssize_t recvfrom(void* buf, size_t len,
+            io_result recvfrom(void* buf, size_t len,
                     sockaddr* src_addr, socklen_t* addrlen);
 
         private:
@@ -140,22 +139,26 @@ namespace snet {
 
     inline socket socket::create(int family, int socktype, int protocol)
     {
-        return ::socket(family, socktype, protocol);
+        sock_t s = ::socket(family, socktype, protocol);
+        if (s == invalid_socket) {
+            throw exception("failed to create socket");
+        }
+        return s;
     }
 
-    inline bool socket::connect(const sockaddr* addr, socklen_t addrlen)
+    inline op_result socket::connect(const sockaddr* addr, socklen_t addrlen) noexcept
     {
-        return ::connect(get(), addr, addrlen) == 0;
+        return ::connect(get(), addr, addrlen);
     }
 
-    inline bool socket::bind(const sockaddr* addr, socklen_t addrlen)
+    inline op_result socket::bind(const sockaddr* addr, socklen_t addrlen) noexcept
     {
-        return ::bind(get(), addr, addrlen) == 0;
+        return ::bind(get(), addr, addrlen);
     }
 
-    inline bool socket::listen(int backlog)
+    inline op_result socket::listen(int backlog) noexcept
     {
-        return ::listen(get(), backlog) == 0;
+        return ::listen(get(), backlog);
     }
 
     inline socket socket::accept(sockaddr* addr, socklen_t* addrlen)

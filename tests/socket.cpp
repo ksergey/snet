@@ -19,13 +19,16 @@ int main(int argc, char* argv[])
     s1.set_cloexec();
     s1.set_nonblock();
     print_socket(s0);
-    print_socket(s1);
+    print_socket(s0);
     s1.close();
     print_socket(s1);
     snet::socket s2 = std::move(s1);
     print_socket(s2);
-    s2 = snet::socket::create(snet::tcp_any);
-    print_socket(s2);
+    try {
+        s2 = snet::socket::create(snet::tcp_any);
+    } catch (const std::exception& e) {
+        std::printf("expected error: %s\n", e.what());
+    }
     s2 = snet::socket::create(snet::tcp_v4);
     print_socket(s2);
     s2 = snet::socket::create(snet::tcp_v6);
@@ -49,11 +52,15 @@ int main(int argc, char* argv[])
     ep = snet::endpoint("2001:0DB8:AA10:0001:0000:0000:0000:00FB", 4446);
     std::printf("endpoint: %s\n", ep.str().c_str());
 
-    auto rc = s2.send("1234", 4);
-    if (rc == -1) {
-        std::printf("failed to send, err: %d\n", snet::last_error::code());
+    auto res = s2.send("1234", 4);
+    if (!res) {
+        if (res.is_disconnected()) {
+            std::printf("disconnected\n");
+        } else {
+            std::printf("failed to send, err: %d\n", res.code());
+        }
     } else {
-        std::printf("sent %d bytes\n", int(rc));
+        std::printf("sent %d bytes\n", int(res.bytes()));
     }
 
     return EXIT_SUCCESS;

@@ -10,12 +10,9 @@ namespace snet {
     inline bool socket::close()
     {
         if (valid()) {
-            if (::closesocket(_sock) == 0) {
-                _sock = invalid_socket;
-                return true;
-            }
+            ::closesocket(_sock); // check result
+            _sock = invalid_socket;
         }
-        return false;
     }
 
     inline bool socket::set_nonblock(bool flag)
@@ -31,26 +28,26 @@ namespace snet {
         return rc != 0;
     }
 
-    inline ssize_t socket::send(const void* buf, size_t len)
+    inline io_result socket::send(const void* buf, size_t len)
     {
         auto rc = ::send(get(), reinterpret_cast< const char* >(buf), int(len), 0);
         return rc == SOCKET_ERROR ? -1 : rc;
     }
 
-    inline ssize_t socket::sendto(const void* buf, size_t len,
+    inline io_result socket::sendto(const void* buf, size_t len,
         const sockaddr* dest_addr, socklen_t addrlen)
     {
         auto rc = ::sendto(get(), reinterpret_cast< const char* >(buf), int(len), 0, dest_addr, addrlen);
         return rc == SOCKET_ERROR ? -1 : rc;
     }
 
-    inline ssize_t socket::recv(void* buf, size_t len)
+    inline io_result socket::recv(void* buf, size_t len)
     {
         auto rc = ::recv(get(), reinterpret_cast< char* >(buf), int(len), 0);
         return rc == SOCKET_ERROR ? -1 : rc;
     }
 
-    inline ssize_t socket::recvfrom(void* buf, size_t len,
+    inline io_result socket::recvfrom(void* buf, size_t len,
         sockaddr* src_addr, socklen_t* addrlen)
     {
         auto rc = ::recvfrom(get(), reinterpret_cast< char* >(buf), int(len), 0, src_addr, addrlen);

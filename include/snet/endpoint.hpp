@@ -41,6 +41,9 @@ namespace snet {
             /// return native data
             const sockaddr* data() const { return &_data.in; }
 
+            /// return native data (for modification)
+            sockaddr* data() { return &_data.in; }
+
             /// return native data size
             size_t size() const;
 

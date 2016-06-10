@@ -7,15 +7,12 @@
 
 namespace snet {
 
-    inline bool socket::close()
+    inline void socket::close() noexcept
     {
         if (valid()) {
-            if (::close(_sock) == 0) {
-                _sock = invalid_socket;
-                return true;
-            }
+            ::close(_sock); // todo check errors
+            _sock = invalid_socket;
         }
-        return false;
     }
 
     inline bool socket::set_nonblock(bool flag)
@@ -52,23 +49,23 @@ namespace snet {
         return rc == 0;
     }
 
-    inline ssize_t socket::send(const void* buf, size_t len)
+    inline io_result socket::send(const void* buf, size_t len)
     {
         return ::send(get(), buf, len, MSG_NOSIGNAL);
     }
 
-    inline ssize_t socket::sendto(const void* buf, size_t len,
+    inline io_result socket::sendto(const void* buf, size_t len,
         const sockaddr* dest_addr, socklen_t addrlen)
     {
         return ::sendto(get(), buf, len, MSG_NOSIGNAL, dest_addr, addrlen);
     }
 
-    inline ssize_t socket::recv(void* buf, size_t len)
+    inline io_result socket::recv(void* buf, size_t len)
     {
         return ::recv(get(), buf, len, MSG_NOSIGNAL);
     }
 
-    inline ssize_t socket::recvfrom(void* buf, size_t len,
+    inline io_result socket::recvfrom(void* buf, size_t len,
         sockaddr* src_addr, socklen_t* addrlen)
     {
         return ::recvfrom(get(), buf, len, MSG_NOSIGNAL, src_addr, addrlen);
