@@ -50,6 +50,14 @@ namespace snet {
             /// @return false in case of error
             bool set_cloexec(bool flag = true);
 
+            /// switch naggles algorithm
+            /// @return false in case of error
+            bool set_tcpnodelay(bool flag = true);
+
+            /// switch reuseaddr socket option
+            /// @return false in case of error
+            bool set_reuseaddr(bool flag = true);
+
             /// create socket
             /// @param[in] family is communication domain
             /// @param[in] socktype is communication semantic
@@ -116,6 +124,18 @@ namespace snet {
     inline socket::~socket()
     {
         close();
+    }
+
+    inline bool socket::set_tcpnodelay(bool flag)
+    {
+        int value = flag ? 1 : 0;
+        return ::setsockopt(get(), IPPROTO_TCP, TCP_NODELAY, &value, sizeof(value)) == 0;
+    }
+
+    inline bool socket::set_reuseaddr(bool flag)
+    {
+        int value = flag ? 1 : 0;
+        return ::setsockopt(get(), SOL_SOCKET, SO_REUSEADDR, &value, sizeof(value)) == 0;
     }
 
     inline socket socket::create(int family, int socktype, int protocol)

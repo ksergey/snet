@@ -11,6 +11,7 @@
 #include <string>
 #include <snet/common.hpp>
 #include <snet/resolver_iterator.hpp>
+#include <snet/protocol.hpp>
 
 namespace snet {
 
@@ -72,7 +73,7 @@ namespace snet {
 
     inline resolver::resolver(const protocol& p, const std::string& node, int flags)
     {
-        size_t found = node.find(':');
+        size_t found = node.rfind(':');
         if (found != std::string::npos) {
             resolv(p, node.substr(0, found).c_str(), node.c_str() + found + 1, flags);
         } else {
