@@ -7,6 +7,7 @@
 #define MADLIFE_result_100616135807_MADLIFE
 
 #include <snet/socket_error.hpp>
+#include <snet/socket.hpp>
 
 namespace snet {
 
@@ -26,11 +27,7 @@ namespace snet {
     };
 
     inline op_result::op_result(int value)
-#if defined( _WIN32 )
-        : socket_error(value == SOCKET_ERROR ? WSAGetLastError() : 0)
-#else /* defined( _WIN32 ) */
-        : socket_error(value == -1 ? errno : 0)
-#endif /* defined( _WIN32 ) */
+        : socket_error(value != 0 ? last_socket_error() : 0)
         , _value(value)
     {}
 
@@ -53,12 +50,30 @@ namespace snet {
     };
 
     inline io_result::io_result(ssize_t value)
-#if defined( _WIN32 )
-        : socket_error(value < 0 ? WSAGetLastError() : 0)
-#else /* defined( _WIN32 ) */
-        : socket_error(value < 0 ? errno : 0)
-#endif /* defined( _WIN32 ) */
+        : socket_error(value < 0 ? last_socket_error() : 0)
         , _value(value)
+    {}
+
+    class accept_result final
+        : public socket_error
+    {
+        public:
+            accept_result() = default;
+            accept_result(sock_t s);
+
+            bool success() const { return _sock.valid(); }
+            operator bool() const { return success(); }
+            bool operator!() const { return !success(); }
+
+            socket&& get() { return std::move(_sock); }
+
+        private:
+            socket _sock;
+    };
+
+    inline accept_result::accept_result(sock_t s)
+        : socket_error(s == invalid_socket ? last_socket_error() : 0)
+        , _sock(s)
     {}
 
 } // namespace snet

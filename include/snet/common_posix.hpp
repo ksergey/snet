@@ -23,6 +23,12 @@ namespace snet {
     /// native socket invalid value
     static constexpr const sock_t invalid_socket = -1;
 
+    /// return last socket error
+    inline int last_socket_error()
+    {
+        return errno;
+    }
+
 } // namespace snet
 
 #endif /* MADLIFE_common_posix_070616233130_MADLIFE */

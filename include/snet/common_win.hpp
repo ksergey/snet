@@ -49,6 +49,12 @@ namespace snet {
     /// map some types
     typedef int ssize_t;
 
+    /// return last socket error
+    inline int last_socket_error()
+    {
+        return ::WSAGetLastError();
+    }
+
 } // namespace snet
 
 #endif /* MADLIFE_common_win_070616233132_MADLIFE */

@@ -32,20 +32,15 @@ int main(int argc, char* argv[])
         int attempts = 0;
         while (size > 0) {
             ++attempts;
-            ssize_t res = socket.send(data, size);
-            if (res > 0) {
-                data += res;
-                size -= res;
-            } else if (res < 0) {
-                if (snet::last_error::interrupted()) {
-                    throw std::runtime_error("interrupted");
-                }
-                if (!snet::last_error::again()) {
-                    throw std::runtime_error("socket error happend <" +
-                            std::to_string(snet::last_error::code()) + ">");
-                }
-            } else {
-                throw std::runtime_error("unexpected peer disconnect");
+            auto res = socket.send(data, size);
+            if (res) {
+                data += res.bytes();
+                size -= res.bytes();
+            } else if (res.is_disconnected()) {
+                throw std::runtime_error("unexpected disconnect");
+            } else if (!res.is_again()) {
+                throw std::runtime_error("socket send error <" +
+                        std::to_string(res.code()) + ">");
             }
         }
 
@@ -55,22 +50,17 @@ int main(int argc, char* argv[])
         attempts = 0;
         while (true) {
             ++attempts;
-            ssize_t res = socket.recv(buffer, sizeof(buffer) - 1);
-            if (res > 0) {
-                buffer[res] = '\0';
+            auto res = socket.recv(buffer, sizeof(buffer) - 1);
+            if (res) {
+                buffer[res.bytes()] = '\0';
                 std::printf("%s", buffer);
-            } else if (res < 0) {
-                if (snet::last_error::interrupted()) {
-                    throw std::runtime_error("interrupted");
-                }
-                if (!snet::last_error::again()) {
-                    throw std::runtime_error("socket error happend <" +
-                            std::to_string(snet::last_error::code()) + ">");
-                }
-            } else {
+            } else if (res.is_disconnected()) {
                 std::printf("\n");
                 std::printf("peer disconnected\n");
                 break;
+            } else if (!res.is_again()) {
+                throw std::runtime_error("socket recv error <" +
+                        std::to_string(res.code()) + ">");
             }
         }
 

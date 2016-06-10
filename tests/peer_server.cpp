@@ -24,20 +24,20 @@ int main(int argc, char* argv[])
         }
 
         while (true) {
-            snet::socket nsock = socket.accept();
-            if (nsock) {
-                nsock.set_nonblock();
-                nsock.set_cloexec();
-                nsock.set_tcpnodelay();
-                socket = std::move(nsock);
+            auto res = socket.accept();
+            if (res) {
+                socket = res.get();
+                socket.set_nonblock();
+                socket.set_cloexec();
+                socket.set_tcpnodelay();
                 break;
             }
-            if (snet::last_error::interrupted()) {
+            if (res.is_interrupted()) {
                 throw std::runtime_error("interrupted");
             }
-            if (!snet::last_error::again()) {
+            if (!res.is_again()) {
                 throw std::runtime_error("socket error happend <" +
-                        std::to_string(snet::last_error::code()) + ">");
+                        std::to_string(res.code()) + ">");
             }
         }
 
@@ -46,23 +46,18 @@ int main(int argc, char* argv[])
         char buffer[128];
         size_t offset = 0;
         while (true) {
-            ssize_t res = socket.recv(buffer + offset, sizeof(buffer) - offset - 1);
-            if (res > 0) {
-                offset += res;
+            auto res = socket.recv(buffer + offset, sizeof(buffer) - offset - 1);
+            if (res) {
+                offset += res.bytes();
                 buffer[offset] = '\0';
                 if (std::strstr(buffer, "aloha")) {
                     break;
                 }
-            } else if (res < 0) {
-                if (snet::last_error::interrupted()) {
-                    throw std::runtime_error("interrupted");
-                }
-                if (!snet::last_error::again()) {
-                    throw std::runtime_error("socket error happend <" +
-                            std::to_string(snet::last_error::code()) + ">");
-                }
-            } else {
-                throw std::runtime_error("unexpected peer disconnect");
+            } else if (res.is_disconnected()) {
+                throw std::runtime_error("unexpected disconnect");
+            } else if (!res.is_again()) {
+                throw std::runtime_error("socket recv error <" +
+                        std::to_string(res.code()) + ">");
             }
         }
 
@@ -73,20 +68,15 @@ int main(int argc, char* argv[])
         size_t size = reply.size();
 
         while (size > 0) {
-            ssize_t res = socket.send(data, size);
-            if (res > 0) {
-                data += res;
-                size -= res;
-            } else if (res < 0) {
-                if (snet::last_error::interrupted()) {
-                    throw std::runtime_error("interrupted");
-                }
-                if (!snet::last_error::again()) {
-                    throw std::runtime_error("socket error happend <" +
-                            std::to_string(snet::last_error::code()) + ">");
-                }
-            } else {
-                throw std::runtime_error("unexpected peer disconnect");
+            auto res = socket.send(data, size);
+            if (res) {
+                data += res.bytes();
+                size -= res.bytes();
+            } else if (res.is_disconnected()) {
+                throw std::runtime_error("unexpected disconnect");
+            } else if (!res.is_again()) {
+                throw std::runtime_error("socket send error <" +
+                        std::to_string(res.code()) + ">");
             }
         }
 
