@@ -31,12 +31,14 @@ namespace snet {
 
     inline bool socket::set_tcpnodelay(bool flag)
     {
+        // TODO: fix me (see set_option)
         int value = flag ? 1 : 0;
         return ::setsockopt(get(), IPPROTO_TCP, TCP_NODELAY, &value, sizeof(value)) == 0;
     }
 
     inline bool socket::set_reuseaddr(bool flag)
     {
+        // TODO: fix me (see set_option)
         int value = flag ? 1 : 0;
         return ::setsockopt(get(), SOL_SOCKET, SO_REUSEADDR, &value, sizeof(value)) == 0;
     }
@@ -68,6 +70,26 @@ namespace snet {
     inline accept_result socket::accept(sockaddr* addr, socklen_t* addrlen)
     {
         return ::accept(get(), addr, addrlen);
+    }
+
+    template< typename OptionT >
+    inline op_result socket::set_option(const OptionT& option)
+    {
+        return ::setsockopt(get(), option.level(), option.name(),
+                option.data(), option.size());
+    }
+
+    template< typename OptionT >
+    inline op_result socket::get_option(OptionT& option)
+    {
+        socklen_t size = option.size();
+        op_result result = ::getsockopt(get(), option.level(), option.name(),
+                option.data(), &size);
+        if (result) {
+            option.resize(size);
+        }
+
+        return result;
     }
 
 } // namespace snet

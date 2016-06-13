@@ -102,6 +102,14 @@ namespace snet {
             io_result recvfrom(void* buf, size_t len,
                     sockaddr* src_addr, socklen_t* addrlen);
 
+            /// set socket option
+            template< typename OptionT >
+            op_result set_option(const OptionT& option);
+
+            /// get socket option
+            template< typename OptionT >
+            op_result get_option(OptionT& option);
+
         private:
             sock_t _sock{ invalid_socket };
     };

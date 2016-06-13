@@ -8,6 +8,7 @@
 #include <snet/socket.hpp>
 #include <snet/resolver.hpp>
 #include <snet/endpoint.hpp>
+#include <snet/socket_option.hpp>
 
 void print_socket(const snet::socket& s);
 
@@ -33,6 +34,23 @@ int main(int argc, char* argv[])
     print_socket(s2);
     s2 = snet::socket::create(snet::tcp_v6);
     print_socket(s2);
+
+    auto setopt_res = s2.set_option(snet::tcp_nodelay(true));
+    if (setopt_res) {
+        std::printf(" option tcp_nodelay set\n");
+    }
+    setopt_res = s2.set_option(snet::reuseaddr(true));
+    if (setopt_res) {
+        std::printf(" option reuseaddr set\n");
+    }
+    setopt_res = s2.set_option(snet::rcvbuf(12000));
+    if (setopt_res) {
+        std::printf(" option rcvbuf set\n");
+    }
+    setopt_res = s2.set_option(snet::sndbuf(12000));
+    if (setopt_res) {
+        std::printf(" option sndbuf set\n");
+    }
 
     snet::resolver resolver = snet::resolver(snet::tcp_any, "google.ru:http");
     std::printf("google.ru resolved as:\n");
