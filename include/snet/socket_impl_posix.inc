@@ -51,24 +51,24 @@ namespace snet {
 
     inline io_result socket::send(const void* buf, size_t len) noexcept
     {
-        return ::send(get(), buf, len, MSG_NOSIGNAL);
+        return ::send(get(), buf, len, 0);
     }
 
     inline io_result socket::sendto(const void* buf, size_t len,
         const sockaddr* dest_addr, socklen_t addrlen) noexcept
     {
-        return ::sendto(get(), buf, len, MSG_NOSIGNAL, dest_addr, addrlen);
+        return ::sendto(get(), buf, len, 0, dest_addr, addrlen);
     }
 
     inline io_result socket::recv(void* buf, size_t len) noexcept
     {
-        return ::recv(get(), buf, len, MSG_NOSIGNAL);
+        return ::recv(get(), buf, len, 0);
     }
 
     inline io_result socket::recvfrom(void* buf, size_t len,
         sockaddr* src_addr, socklen_t* addrlen) noexcept
     {
-        return ::recvfrom(get(), buf, len, MSG_NOSIGNAL, src_addr, addrlen);
+        return ::recvfrom(get(), buf, len, 0, src_addr, addrlen);
     }
 
     template< typename OptionT >

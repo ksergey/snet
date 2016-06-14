@@ -6,6 +6,7 @@
 #ifndef MADLIFE_common_posix_070616233130_MADLIFE
 #define MADLIFE_common_posix_070616233130_MADLIFE
 
+#include <csignal>
 #include <cerrno>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -24,10 +25,19 @@ namespace snet {
     static constexpr const sock_t invalid_socket = -1;
 
     /// return last socket error
-    inline int last_socket_error()
+    inline int last_socket_error() { return errno; }
+
+    /// prevent process termination during sigpipe
+    struct sigpipe_initializer final
     {
-        return errno;
-    }
+        sigpipe_initializer()
+        {
+            std::signal(SIGPIPE, SIG_IGN);
+        }
+    };
+
+    /// init trick
+    static const sigpipe_initializer sigpipe_initialized{};
 
 } // namespace snet
 

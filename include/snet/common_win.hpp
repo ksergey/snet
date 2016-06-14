@@ -50,10 +50,7 @@ namespace snet {
     typedef int ssize_t;
 
     /// return last socket error
-    inline int last_socket_error()
-    {
-        return ::WSAGetLastError();
-    }
+    inline int last_socket_error() { return ::WSAGetLastError(); }
 
 } // namespace snet
 
