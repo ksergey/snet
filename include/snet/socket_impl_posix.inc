@@ -71,4 +71,24 @@ namespace snet {
         return ::recvfrom(get(), buf, len, MSG_NOSIGNAL, src_addr, addrlen);
     }
 
+    template< typename OptionT >
+    inline op_result socket::set_option(const OptionT& option)
+    {
+        return ::setsockopt(get(), option.level(), option.name(),
+                option.data(), option.size());
+    }
+
+    template< typename OptionT >
+    inline op_result socket::get_option(OptionT& option)
+    {
+        socklen_t size = option.size();
+        op_result result = ::getsockopt(get(), option.level(), option.name(),
+                option.data(), &size);
+        if (result) {
+            option.resize(size);
+        }
+
+        return result;
+    }
+
 } // namespace snet

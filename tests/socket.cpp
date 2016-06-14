@@ -35,10 +35,34 @@ int main(int argc, char* argv[])
     s2 = snet::socket::create(snet::tcp_v6);
     print_socket(s2);
 
+    snet::tcp_nodelay opt;
+    auto getopt_res = s2.get_option(opt);
+    if (!getopt_res) {
+        std::printf("couldn't get option\n");
+    } else {
+        if (opt.value()) {
+            std::printf("tcp-nodelay is set\n");
+        } else {
+            std::printf("tcp-nodelay is not set\n");
+        }
+    }
+
     auto setopt_res = s2.set_option(snet::tcp_nodelay(true));
     if (setopt_res) {
         std::printf(" option tcp_nodelay set\n");
     }
+
+    getopt_res = s2.get_option(opt);
+    if (!getopt_res) {
+        std::printf("couldn't get option\n");
+    } else {
+        if (opt.value()) {
+            std::printf("tcp-nodelay is set\n");
+        } else {
+            std::printf("tcp-nodelay is not set\n");
+        }
+    }
+
     setopt_res = s2.set_option(snet::reuseaddr(true));
     if (setopt_res) {
         std::printf(" option reuseaddr set\n");

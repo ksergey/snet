@@ -54,4 +54,24 @@ namespace snet {
         return rc == SOCKET_ERROR ? -1 : rc;
     }
 
+    template< typename OptionT >
+    inline op_result socket::set_option(const OptionT& option)
+    {
+        return ::setsockopt(get(), option.level(), option.name(),
+                reinterpret_cast< const char* >(option.data()), option.size());
+    }
+
+    template< typename OptionT >
+    inline op_result socket::get_option(OptionT& option)
+    {
+        socklen_t size = option.size();
+        op_result result = ::getsockopt(get(), option.level(), option.name(),
+                option.data(), &size);
+        if (result) {
+            option.resize(size);
+        }
+
+        return result;
+    }
+
 } // namespace snet
