@@ -35,7 +35,10 @@ namespace detail {
 
             void resize(size_t size)
             {
-                if (size != sizeof(_value)) {
+                // windows workaround
+                if (size == sizeof(char)) {
+                    _value = *reinterpret_cast< char* >(&_value) ? 1 : 0;
+                } else if (size != sizeof(_value)) {
                     throw exception("boolean socket option resize");
                 }
             }
