@@ -64,10 +64,11 @@ namespace snet {
     template< typename OptionT >
     inline op_result socket::get_option(OptionT& option)
     {
-        socklen_t size = option.size();
+        int size = option.size();
         op_result result = ::getsockopt(get(), option.level(), option.name(),
-                option.data(), &size);
+                reinterpret_cast< char* >(option.data()), &size);
         if (result) {
+            assert( size >= 0 );
             option.resize(size);
         }
 
