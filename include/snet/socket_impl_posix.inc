@@ -49,37 +49,37 @@ namespace snet {
         return rc == 0;
     }
 
-    inline io_result socket::send(const void* buf, size_t len)
+    inline io_result socket::send(const void* buf, size_t len) noexcept
     {
         return ::send(get(), buf, len, MSG_NOSIGNAL);
     }
 
     inline io_result socket::sendto(const void* buf, size_t len,
-        const sockaddr* dest_addr, socklen_t addrlen)
+        const sockaddr* dest_addr, socklen_t addrlen) noexcept
     {
         return ::sendto(get(), buf, len, MSG_NOSIGNAL, dest_addr, addrlen);
     }
 
-    inline io_result socket::recv(void* buf, size_t len)
+    inline io_result socket::recv(void* buf, size_t len) noexcept
     {
         return ::recv(get(), buf, len, MSG_NOSIGNAL);
     }
 
     inline io_result socket::recvfrom(void* buf, size_t len,
-        sockaddr* src_addr, socklen_t* addrlen)
+        sockaddr* src_addr, socklen_t* addrlen) noexcept
     {
         return ::recvfrom(get(), buf, len, MSG_NOSIGNAL, src_addr, addrlen);
     }
 
     template< typename OptionT >
-    inline op_result socket::set_option(const OptionT& option)
+    inline op_result socket::set_option(const OptionT& option) noexcept
     {
         return ::setsockopt(get(), option.level(), option.name(),
                 option.data(), option.size());
     }
 
     template< typename OptionT >
-    inline op_result socket::get_option(OptionT& option)
+    inline op_result socket::get_option(OptionT& option) noexcept
     {
         socklen_t size = option.size();
         op_result result = ::getsockopt(get(), option.level(), option.name(),

@@ -10,6 +10,7 @@
 #include <stdexcept>
 #include <snet/resolver.hpp>
 #include <snet/socket.hpp>
+#include <snet/socket_option.hpp>
 
 namespace snet {
 
@@ -57,7 +58,7 @@ namespace snet {
             if (s.connect(ep.data(), ep.size())) {
                 s.set_nonblock();
                 s.set_cloexec();
-                s.set_tcpnodelay();
+                s.set_option(tcp_nodelay(true));
                 return s;
             }
         }
@@ -73,7 +74,7 @@ namespace snet {
                 throw std::runtime_error("failed to create socket");
             }
 
-            s.set_reuseaddr();
+            s.set_option(reuseaddr(true));
             if (s.bind(ep.data(), ep.size())) {
                 s.set_nonblock();
                 s.set_cloexec();

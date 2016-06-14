@@ -29,20 +29,6 @@ namespace snet {
         close();
     }
 
-    inline bool socket::set_tcpnodelay(bool flag)
-    {
-        //// TODO: fix me (see set_option)
-        //int value = flag ? 1 : 0;
-        //return ::setsockopt(get(), IPPROTO_TCP, TCP_NODELAY, &value, sizeof(value)) == 0;
-    }
-
-    inline bool socket::set_reuseaddr(bool flag)
-    {
-        //// TODO: fix me (see set_option)
-        //int value = flag ? 1 : 0;
-        //return ::setsockopt(get(), SOL_SOCKET, SO_REUSEADDR, &value, sizeof(value)) == 0;
-    }
-
     inline socket socket::create(int family, int socktype, int protocol)
     {
         sock_t s = ::socket(family, socktype, protocol);
@@ -67,7 +53,7 @@ namespace snet {
         return ::listen(get(), backlog);
     }
 
-    inline accept_result socket::accept(sockaddr* addr, socklen_t* addrlen)
+    inline accept_result socket::accept(sockaddr* addr, socklen_t* addrlen) noexcept
     {
         return ::accept(get(), addr, addrlen);
     }

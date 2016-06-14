@@ -52,14 +52,6 @@ namespace snet {
             /// @return false in case of error
             bool set_cloexec(bool flag = true);
 
-            /// switch naggles algorithm
-            /// @return false in case of error
-            bool set_tcpnodelay(bool flag = true);
-
-            /// switch reuseaddr socket option
-            /// @return false in case of error
-            bool set_reuseaddr(bool flag = true);
-
             /// create socket
             /// @param[in] family is communication domain
             /// @param[in] socktype is communication semantic
@@ -86,29 +78,29 @@ namespace snet {
             /// accept incomming connection
             /// @return accepted socket
             /// the function actualy could return non valid socket in case of error
-            accept_result accept(sockaddr* addr = nullptr, socklen_t* addrlen = nullptr);
+            accept_result accept(sockaddr* addr = nullptr, socklen_t* addrlen = nullptr) noexcept;
 
             /// send data into socket
-            io_result send(const void* buf, size_t len);
+            io_result send(const void* buf, size_t len) noexcept;
 
             /// send data into socket
             io_result sendto(const void* buf, size_t len,
-                    const sockaddr* dest_addr, socklen_t addrlen);
+                    const sockaddr* dest_addr, socklen_t addrlen) noexcept;
 
             /// recv data from socket
-            io_result recv(void* buf, size_t len);
+            io_result recv(void* buf, size_t len) noexcept;
 
             /// recv data from socket
             io_result recvfrom(void* buf, size_t len,
-                    sockaddr* src_addr, socklen_t* addrlen);
+                    sockaddr* src_addr, socklen_t* addrlen) noexcept;
 
             /// set socket option
             template< typename OptionT >
-            op_result set_option(const OptionT& option);
+            op_result set_option(const OptionT& option) noexcept;
 
             /// get socket option
             template< typename OptionT >
-            op_result get_option(OptionT& option);
+            op_result get_option(OptionT& option) noexcept;
 
         private:
             sock_t _sock{ invalid_socket };

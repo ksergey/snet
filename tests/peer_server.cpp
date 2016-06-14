@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
                 socket = res.get();
                 socket.set_nonblock();
                 socket.set_cloexec();
-                socket.set_tcpnodelay();
+                socket.set_option(snet::tcp_nodelay(true));
                 break;
             }
             if (res.is_interrupted()) {
