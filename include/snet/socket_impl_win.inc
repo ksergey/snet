@@ -7,7 +7,7 @@
 
 namespace snet {
 
-    inline bool socket::close()
+    inline void socket::close() noexcept
     {
         if (valid()) {
             ::closesocket(_sock); // check result
