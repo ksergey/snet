@@ -2,9 +2,6 @@ cmake_minimum_required(VERSION 2.8)
 
 project(SNET CXX)
 
-# include necessary submodules
-set(CMAKE_MODULE_PATH "${SNET_SOURCE_DIR}/cmake")
-
 # setting the cpp standard
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_EXTENSIONS OFF)
