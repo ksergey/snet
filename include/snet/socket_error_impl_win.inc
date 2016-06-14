@@ -14,7 +14,7 @@ namespace snet {
         return buffer;
     }
 
-    inline bool socket_result::is_interrupted() const
+    inline bool socket_error::is_interrupted() const
     {
         return _code == WSAEINTR;
     }
